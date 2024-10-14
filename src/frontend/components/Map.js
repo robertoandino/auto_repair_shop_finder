@@ -1,37 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
-const containerStyle = {
-    width: '100%',
-    height: '400px',
-};
+const OSMMap = ({ repairShops }) => {
 
-const Map = ({ repairShops }) => {
-
-    const [location, setLocation] = useState({ lat: 0, lng: 0 });
+    const [location, setLocation] = useState([51.505, -0.09]); //default location coordinates
 
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition((position) => {
-            setLocation({
-                lat: position.coords.latitude,
-                lng: position.coords.longitude,
-            });
-        });
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                setLocation([position.coords.latitude, position.coords.longitude]);
+            },
+            () => {
+                console.error('Could not get current location');
+            }
+        );
     }, []);
 
     return (
-        <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
-            <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={location}
-                zoom={12}
-            >
-                {repairShops.map((shop, index) => (
-                    <Marker key={index} position={{ lat: shop.lat, lng: shop.lng }} />
-                ))}
-            </GoogleMap>
-        </LoadScript>
+        <MapContainer center={location} zoom={13} style={{ height: '400px', width: '100%' }}>
+            <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreemap.org/copyright">OpenStreetMap</a> contributors'
+            />
+            {repairShops.map((shop, index) => (
+                <Marker key={index} position={[shop.lat, shop.lng]}>
+                    <Popup>
+                        {shop.name} <br /> {shop.service}
+                    </Popup>
+                </Marker>
+            ))}
+        </MapContainer>
     );
 };
 
-export default Map;
+export default OSMMap;

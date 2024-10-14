@@ -1,27 +1,37 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import axios from 'axios';
+import OSMMap from './frontend/components/Map';
+import SearchFilters from './frontend/components/SearchFilters';
 import './App.css';
+import 'leaflet/dist/leaflet.css';
 
-function App() {
+const App = () => {
+  
+  const [repairShops, setRepairShops] = useState([]);
+
+  const handleSearch = async (filters) => {
+    /*try {
+      const res = await axios.get('/api/repair-shops', {
+        params: filters,
+      });
+      setRepairShops(res.data);
+    } catch (err) {
+      console.error('Error fetching repair shops: ', err);
+    }*/
+      const sampleRepairShops = [
+        { lat: 51.505, lng: -0.09, name: 'Shop A', service: 'General Repair' },
+        { lat: 51.515, lng: -0.1, name: 'Shop B', service: 'Transmission' },
+      ];
+      
+      setRepairShops(sampleRepairShops);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <SearchFilters onSearch={handleSearch} />
+      <OSMMap repairShops={repairShops} />
     </div>
   );
-}
+};
 
-export default App;
-
-
+export default  App;
