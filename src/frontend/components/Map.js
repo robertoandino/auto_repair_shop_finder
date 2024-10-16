@@ -1,35 +1,45 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import L from 'leaflet';
 
-const OSMMap = ({ repairShops }) => {
+import userIconn from '../../assets/icons/placeholder.png';
+import pinIcon from '../../assets/icons/pin.png';
 
-    const [userLocation, setUserLocation] = useState(null);
-    const [mapCenter, setMapCenter] = useState([51.505, -0.09]); //default location coordinates
+const OSMMap = ({ repairShops, userLocation }) => {
+
+    //const defaultCenter = [51.505, -0.09]; //default location coordinates
 
     const userIcon = new L.Icon({
-        iconUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/ec/Location_dot_blue.svg',
+        iconUrl: userIconn,
         iconSize: [25, 25],
     });
 
-    useEffect(() => {
-        
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    console.log('User location:', latitude, longitude);
-                    setUserLocation([latitude, longitude]);
-                    setMapCenter([latitude, longitude]);
-                },
-                (err) => {
-                    console.error('Error fetching user location: ', err);
-                }
-            );
+    const getShopIcon = (service) => {
+        switch(service){
+            case 'General Repair':
+                return new L.Icon({
+                    iconUrl: pinIcon,
+                    iconSize: [25, 25],
+                });
+            case 'Transmission':
+                return new L.Icon({
+                    iconUrl: pinIcon,
+                    iconSize: [25, 25],
+                });
+            case 'Brake Repair':
+                return new L.Icon({
+                    iconUrl:  pinIcon,
+                    iconSize: [25, 25],
+                });
+            case 'Oil Change':
+                return new L.Icon({
+                    iconUrl:  pinIcon,
+                    iconSize: [25, 25],
+                });
+            default:
+                return null;
         }
-
-
-    }, []);
+    }
 
     function ChangeView({ center }){
         const map = useMap();
@@ -37,9 +47,13 @@ const OSMMap = ({ repairShops }) => {
         return null;
     }
 
+    //console.log('Repair Shops:', JSON.stringify(repairShops, null, 2));
+
+    const mapCenter = userLocation || (repairShops.length > 0 ? [repairShops[0].lat, repairShops[0].lng] : [51.505, -0.09]);
+
     return (
         <MapContainer center={mapCenter} zoom={13} style={{ height: '400px', width: '100%' }}>
-            <ChangeView center = {mapCenter} />
+            {userLocation && <ChangeView center = {userLocation} />}
             <TileLayer
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="https://www.openstreemap.org/copyright">OpenStreetMap</a> contributors'
@@ -52,7 +66,7 @@ const OSMMap = ({ repairShops }) => {
             )}
 
             {repairShops.map((shop, index) => (
-                <Marker key={index} position={[shop.lat, shop.lng]}>
+                <Marker key={index} position={[shop.lat, shop.lng]} icon={getShopIcon(shop.service)}>
                     <Popup>
                         {shop.name} <br /> {shop.service}
                     </Popup>

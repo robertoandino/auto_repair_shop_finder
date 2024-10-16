@@ -7,6 +7,7 @@ const SearchFilters = ({ onSearch }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        //console.log(model, service)
         onSearch({ model, service });
     }
 
