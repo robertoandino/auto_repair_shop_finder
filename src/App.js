@@ -6,10 +6,12 @@ import './App.css';
 import 'leaflet/dist/leaflet.css';
 
 const mockRepairShops = [
-  { lat: 25.7617, lng: -80.1918, name: 'Shop A', service: 'General Repair', model: 'Sedan'},
-  { lat: 25.7743, lng: -80.1937, name: 'Shop B', service: 'Transmission', model: 'SUV'},
-  { lat: 25.7333, lng: -80.2465, name: 'Shop C', service: 'Brake Repair', model: 'Truck'},
-  { lat: 25.7617, lng: -80.1918, name: 'Shop D', service: 'Oil Change', model: 'Sedan'},
+  { lat: 25.7617, lng: -80.1918, name: 'Shop A', service: 'General Repair', model: 'Toyota'},
+  { lat: 25.7743, lng: -80.1937, name: 'Shop B', service: 'Transmission', model: 'Honda'},
+  { lat: 25.7333, lng: -80.2465, name: 'Shop C', service: 'Brake Repair', model: 'Ford'},
+  { lat: 25.7617, lng: -80.1918, name: 'Shop D', service: 'Oil Change', model: 'BMW'},
+  { lat: 25.7617, lng: -80.1918, name: 'Shop D', service: 'Oil Change', model: 'Audi'},
+  { lat: 25.7617, lng: -80.1918, name: 'Shop D', service: 'Oil Change', model: 'Mercedes'},
 ];
 
 const App = () => {

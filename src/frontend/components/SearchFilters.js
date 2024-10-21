@@ -8,8 +8,16 @@ const SearchFilters = ({ onSearch }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        //console.log(model, service)
-        onSearch({ model, service });
+        
+        if(model && service){
+         
+            onSearch({ model, service });
+    
+        }else{
+
+            alert('Please select both car model and service type');
+
+        }
     }
 
     return (
@@ -20,26 +28,38 @@ const SearchFilters = ({ onSearch }) => {
                     <label htmlFor="car-model">Car Model:</label>
                     <div className="input-wrapper">
                         <i className="fa fa-car" aria-hidden="true"></i>
-                        <input 
-                            type="text"
-                            id='car-model'
+                        <select 
+                            id="car-model"
                             value={model}
                             onChange={(e) => setModel(e.target.value)}
-                            placeholder="Enter your car model"
-                        />
+                            aria-label="Select Car Model"
+                        >
+                            <option value="">Select a Car Model</option>
+                            <option value="Toyota">Toyota</option>
+                            <option value="Honda">Honda</option>
+                            <option value="Ford">Ford</option>
+                            <option value="BMW">BMW</option>
+                            <option value="Audi">Audi</option>
+                            <option value="Mercedes">Mercedes</option>
+                        </select>
                     </div>
                 </div>
                 <div className="filter-input">
                     <label htmlFor="service-type">Service Type:</label>
                     <div className="input-wrapper">
                         <i className="fa fa-wrench" aria-hidden="true"></i>
-                        <input 
-                            type="text"
-                            id='service-type'
+                        <select
+                            id="service-type"
                             value={service}
                             onChange={(e) => setService(e.target.value)}
-                            placeholder="Enter service type"
-                        />
+                            aria-label="Select Service Type"
+                        >
+                            <option value="">Select a Service Type</option>
+                            <option value="General Repair">General Repair</option>
+                            <option value="Transmission">Transmission</option>
+                            <option value="Break Service">Brake Service</option>
+                            <option value="Oil Change">Oil Change</option>
+                        </select>
                     </div>
                 </div>
                 <button type="submit" className="search-button">
